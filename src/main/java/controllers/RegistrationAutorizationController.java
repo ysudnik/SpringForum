@@ -86,8 +86,8 @@ public class RegistrationAutorizationController {
             } else {
                 page = "RegistrationAtOnce";
             }
-        }else {
-            page="RegistrationAtOnce";
+        } else {
+            page = "RegistrationAtOnce";
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -109,21 +109,15 @@ public class RegistrationAutorizationController {
             List<User> fullusers = daoXmlUsers.getAll(Path3, User.class);
             user.setName(name);
             user.setPass(password);
-            if (fullusers.isEmpty()) {
-                daoXmlUsers.add(user, Path3, User.class, "users");
-                page = "Autorization";
-                return page;
-            } else {
-                for (User user1 : fullusers) {
-                    if (user1.getName().equals(user)) {
-                        page = "RegistrationAtOnce";
-                        return page;
-                    }
+            for (User user1 : fullusers) {
+                if (user1.getName().equals(name)) {
+                    page = "RegistrationAtOnce";
+                    return page;
                 }
-                daoXmlUsers.add(user, Path3, User.class, "users");
-                page = "Autorization";
-                return page;
             }
+            daoXmlUsers.add(user, Path3, User.class, "users");
+            page = "Autorization";
+            return page;
         } else {
             try {
                 file.createNewFile();
