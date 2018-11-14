@@ -1,23 +1,73 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:context="http://www.springframework.org/schema/context"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-        <context:component-scan base-package="controllers"/>
+    <context:component-scan base-package="controllers"/>
 
-    <bean id="viewResolver"
-          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass"
-                  value="org.springframework.web.servlet.view.JstlView"></property>
-        <property name="prefix">
-            <value>/WEB-INF/pages/</value>
-        </property>
-        <property name="suffix">
-            <value>.jsp</value>
-        </property>
+        <bean id="viewResolver"
+              class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+            <property name="viewClass"
+                      value="org.springframework.web.servlet.view.JstlView"></property>
+            <property name="prefix">
+                <value>/WEB-INF/pages/</value>
+            </property>
+            <property name="suffix">
+                <value>.jsp</value>
+            </property>
 
+        </bean>
+        <bean id="forumController"
+              class="controllers.ForumController">
+            <property name="Path" value="d:\\sportmessages.xml"/>
+            <property name="Path2" value="d:\automessages.xml"/>
+            <!--<property name="daoXmlMessages" ref="daoXml"/>-->
+            <!--<property name="date" ref="date"/>-->
+            <!--<property name="formatter" ref="formatter"/>-->
+            <!--<property name="data" ref="formatter"-->
+            <!--<property name="message" ref="message"/>-->
+            <!--<property name="user" ref="user"/>-->
+            <property name="fileAuto" ref="fileAuto"/>
+            <property name="fileSport" ref="fileSport"/>
+        </bean>
+
+        <bean id="daoXml"
+              class="dao.DaoXml">
+
+        </bean>
+        <!--<bean id="date"-->
+              <!--class="java.util.Date">-->
+        <!--</bean>-->
+        <!--<bean id="formatter"-->
+              <!--class="java.text.SimpleDateFormat">-->
+            <!--<constructor-arg value="dd-MM-yyyy HH:mm:ss"/>-->
+
+        <!--</bean>-->
+        <bean id="message"
+              class="objects.Message">
+
+        </bean>
+    <bean id="user"
+          class="objects.User">
+
+    </bean >
+    <bean id="registrationAutorizationController"
+          class="controllers.RegistrationAutorizationController">
+        <property name="Path3" value="d:\\work\\users.xml"/>
+        <property name="user" ref="user"/>
+        <property name="daoXmlUsers" ref="daoXml" />
+        <property name="file" ref="files"/>
     </bean>
-
-
-
-</beans>
+    <bean id="files"
+          class="java.io.File">
+        <constructor-arg  type="java.lang.String" value="d:\\work\\users.xml"/>
+    </bean>
+    <bean id="fileSport"
+          class="java.io.File">
+        <constructor-arg  type="java.lang.String" value="d:\\sportmessages.xml"/>
+    </bean>
+    <bean id="fileAuto"
+          class="java.io.File">
+        <constructor-arg  type="java.lang.String" value="d:\\automessages.xml"/>
+    </bean>
+    </beans>

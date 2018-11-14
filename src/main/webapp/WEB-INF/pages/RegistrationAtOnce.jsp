@@ -11,7 +11,7 @@
     <title>Повторная регистрация</title>
 </head>
 <body>
-<h3>Пользователь с таким именем уже существует</h3>
+<h3>Пожалуйста, зарегистрируйтесь:</h3>
 <form action="/registration" method="post">
     <label>Пожалуйста, придумайте Ваш логин:</label><br>
     <input type="text" name="user" placeholder="userName" /><br>
