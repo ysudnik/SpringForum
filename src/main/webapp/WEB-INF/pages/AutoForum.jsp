@@ -16,20 +16,38 @@
 <script type="text/javascript">
     setTimeout(func2, 7000)
 </script>
-<c:forEach items="${messagesAuto}" var="message">
 
-    <div><c:out value="${message.date}" /></div>
-    <div><c:out value="${message.getAuthor().getName()}" /><c:out value=": ${message.getText()}" /></div>
-</c:forEach>
-<form action="/autoMessage" method="post" >
-    <input type="hidden" value="${userName}" name="userName">
-    <input type="text"  name="message">
-    <input type="submit" value="отправить">
-</form>
-<hr>
-<form action="/sport" method="post" >
-    <input type="hidden" value="${userName}" name="userName">
-    <input type="submit" value="перейти на тему спорт">
-</form>
+<c:choose>
+    <c:when test="${messagesAuto==null}">
+        <h3>Чат пуст, напишите первым</h3>
+        <form action="/autoMessage" method="post">
+            <input type="hidden" value="${userName}" name="userName">
+            <input type="text" name="message">
+            <input type="submit" value="отправить">
+        </form>
+        <hr>
+        <form action="/sport" method="post">
+            <input type="hidden" value="${userName}" name="userName">
+            <input type="submit" value="перейти на тему спорта">
+        </form>
+    </c:when>
+    <c:when test="${messagesAuto!=null}">
+        <c:forEach items="${messagesAuto}" var="message">
+
+            <div><c:out value="${message.date}"/></div>
+            <div><c:out value="${message.getAuthor().getName()}"/><c:out value=": ${message.getText()}"/></div>
+        </c:forEach>
+        <form action="/autoMessage" method="post">
+            <input type="hidden" value="${userName}" name="userName">
+            <input type="text" name="message">
+            <input type="submit" value="отправить">
+        </form>
+        <hr>
+        <form action="/sport" method="post">
+            <input type="hidden" value="${userName}" name="userName">
+            <input type="submit" value="перейти на тему спорта">
+        </form>
+    </c:when>
+</c:choose>
 </body>
 </html>

@@ -19,15 +19,20 @@ import java.util.Date;
 
 @Controller
 public class ForumController {
-    DaoXml<Message> daoXmlMessages = new DaoXml<>();
+    public DaoXml<Message> getDaoXmlMessages() {
+        return daoXmlMessages;
+    }
+
+    public void setDaoXmlMessages(DaoXml<Message> daoXmlMessages) {
+        this.daoXmlMessages = daoXmlMessages;
+    }
+
+    DaoXml<Message> daoXmlMessages;
     String Path;
-    String page;
     String Path2;
     Date date = new Date();
     Format formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     String data = formatter.format(date);
-//    User user;
-//    Message message;
     File fileAuto;
     File fileSport;
 
@@ -50,13 +55,6 @@ public class ForumController {
     public ForumController() {
     }
 
-//    public DaoXml<Message> getDaoXmlMessages() {
-//        return daoXmlMessages;
-//    }
-//
-//    public void setDaoXmlMessages(DaoXml<Message> daoXmlMessages) {
-//        this.daoXmlMessages = daoXmlMessages;
-//    }
 
     public String getPath() {
         return Path;
@@ -64,14 +62,6 @@ public class ForumController {
 
     public void setPath(String path) {
         Path = path;
-    }
-
-    public String getPage() {
-        return page;
-    }
-
-    public void setPage(String page) {
-        this.page = page;
     }
 
     public String getPath2() {
@@ -90,138 +80,77 @@ public class ForumController {
         this.date = date;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-//
-//    public Message getMessage() {
-//        return message;
-//    }
-//
-//    public void setMessage(Message message) {
-//        this.message = message;
-//    }
-
     @RequestMapping(value = "/sport", method = RequestMethod.POST)
     public String Sport(@RequestParam(value = "userName") String userName,
                         HttpServletRequest request) {
-        if ((new File(Path)).exists()) {
-            ArrayList<Message> messages = daoXmlMessages.getAll(Path, Message.class);
-            if (!messages.isEmpty()) {
-                request.setAttribute("messagesSport", messages);
-                request.setAttribute("userName", userName);
-                page = "SportForum";
-            } else {
-                request.setAttribute("userName", userName);
-                page = "SportFirstMessage";
-            }
-        } else {
-            page = "SportFirstMessage";
-            try {
-                fileSport.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return page;
-        }
-        return page;
+        String attribute ="messagesSport";
+        String forum= "SportForum";
+        return method(request,userName,Path,attribute,forum);
     }
 
     @RequestMapping("/auto")
     public String Auto(@RequestParam(value = "userName") String userName,
                        HttpServletRequest request) {
-        if ((new File(Path2)).exists()) {
-            ArrayList<Message> messages = daoXmlMessages.getAll(Path2, Message.class);
-            if (!messages.isEmpty()) {
-                request.setAttribute("messagesAuto", messages);
-                request.setAttribute("userName", userName);
-                page = "AutoForum";
-            } else {
-                request.setAttribute("userName", userName);
-                page = "AutoFirstMessage";
-            }
-            return page;
-        }else {
-                page = "AutoFirstMessage";
-                try {
-                    fileAuto.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return page;
-        }
+        String attribute ="messagesAuto";
+        String forum= "AutoForum";
+        return method(request,userName,Path2,attribute,forum);
     }
 
-        @RequestMapping(value = "/sportMessage", method = RequestMethod.POST)
-        public String Sport2 (@RequestParam(value = "userName") String userName,
-                @RequestParam(value = "message") String message,
-                HttpServletRequest request){
-            if (message != null) {
-                User user = new User(userName);
-                Message newMsg = new Message(user,message,data);
-                daoXmlMessages.add(newMsg,Path, Message.class, "sportmessages");
-                ArrayList<Message> messages = daoXmlMessages.getAll(Path, Message.class);
-            request.setAttribute("messagesSport", messages);
-            request.setAttribute("userName", userName);
-            page = "SportForum";
-        }
-        ArrayList<Message> messages = daoXmlMessages.getAll(Path, Message.class);
-        request.setAttribute("messagesSport", messages);
+
+    @RequestMapping(value = "/sportMessage", method = RequestMethod.POST)
+    public String Sport2(@RequestParam(value = "userName") String userName,
+                         @RequestParam(value = "message") String message,
+                         HttpServletRequest request) {
+        String attribute = "messagesSport";
+        String forum = "SportForum";
+        return method2 (request,userName,message,attribute,forum,Path);
+
+    }
+
+    private String method2(HttpServletRequest request,String userName, String message, String attribute, String forum,String way) {
         request.setAttribute("userName", userName);
+        String page = null;
+        if (message != null) {
+            User user = new User(userName);
+            Message newMsg = new Message(user, message, data);
+            daoXmlMessages.add(newMsg, way, Message.class, attribute);
+            ArrayList<Message> messages = daoXmlMessages.getAll(way, Message.class);
+            request.setAttribute(attribute, messages);
+            page = forum;
+        }
         return page;
-        }
-
-        @RequestMapping(value = "/autoMessage", method = RequestMethod.POST)
-        public String Auto2 (@RequestParam(value = "userName") String userName,
-                @RequestParam(value = "message") String message,
-                HttpServletRequest request){
-            if (message != null) {
-                User user = new User(userName);
-                Message newMsg = new Message(user,message,data);
-                daoXmlMessages.add(newMsg,Path2, Message.class, "sportmessages");
-            ArrayList<Message> messages = daoXmlMessages.getAll(Path2, Message.class);
-            request.setAttribute("messagesAuto", messages);
-            request.setAttribute("userName", userName);
-            page = "AutoForum";
-        }
-
-        return page;
-        }
-
-//    @RequestMapping(value = "/autoMessage", method = RequestMethod.GET)
-//    public String Auto3(@RequestParam(value = "userName") String userName,
-//                        @RequestParam(value = "message") String message,
-//                        HttpServletRequest request) {
-//        if (message != null) {
-//            ArrayList<Message> messages = daoXmlMessages.getAll(Path2, Message.class);
-//            request.setAttribute("messagesAuto", messages);
-//            request.setAttribute("userName", userName);
-//            page = "AutoForum";
-//        }
-//
-//        return page;
-//    }
-//
-//    @RequestMapping(value = "/sportMessage", method = RequestMethod.GET)
-//    public String Sport3(@RequestParam(value = "userName") String userName,
-//                         @RequestParam(value = "message") String message,
-//                         HttpServletRequest request) {
-//        if (message != null) {
-//            ArrayList<Message> messages = daoXmlMessages.getAll(Path, Message.class);
-//            request.setAttribute("messagesSport", messages);
-//            request.setAttribute("userName", userName);
-//            page = "SportForum";
-//        }
-//        ArrayList<Message> messages = daoXmlMessages.getAll(Path, Message.class);
-//        request.setAttribute("messagesSport", messages);
-//        request.setAttribute("userName", userName);
-//        return page;
-//    }
-
-
-
     }
+
+    @RequestMapping(value = "/autoMessage", method = RequestMethod.POST)
+    public String Auto2(@RequestParam(value = "userName") String userName,
+                        @RequestParam(value = "message") String message,
+                        HttpServletRequest request) {
+        String attribute = "messagesAuto";
+        String forum = "AutoForum";
+        return method2 (request,userName,message,attribute,forum,Path2);
+    }
+
+    private String method (HttpServletRequest request,String userName,String way,String attribut,String forum){
+        String page;
+        request.setAttribute("userName", userName);
+        if ((new File(way)).exists()) {
+            ArrayList<Message> messages = daoXmlMessages.getAll(way, Message.class);
+            if (!messages.isEmpty()) {
+                request.setAttribute(attribut, messages);
+                page = forum;
+            } else {
+                messages = null;
+                request.setAttribute(attribut, messages);
+                page = forum;
+            }
+        } else {
+            page = forum;
+            try {
+                fileSport.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return page;
+    }
+}

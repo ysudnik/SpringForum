@@ -21,36 +21,15 @@
               class="controllers.ForumController">
             <property name="Path" value="d:\\sportmessages.xml"/>
             <property name="Path2" value="d:\automessages.xml"/>
-            <!--<property name="daoXmlMessages" ref="daoXml"/>-->
-            <!--<property name="date" ref="date"/>-->
-            <!--<property name="formatter" ref="formatter"/>-->
-            <!--<property name="data" ref="formatter"-->
-            <!--<property name="message" ref="message"/>-->
-            <!--<property name="user" ref="user"/>-->
             <property name="fileAuto" ref="fileAuto"/>
             <property name="fileSport" ref="fileSport"/>
+            <property name="daoXmlMessages" ref="daoXml"/>
         </bean>
 
         <bean id="daoXml"
               class="dao.DaoXml">
 
         </bean>
-        <!--<bean id="date"-->
-              <!--class="java.util.Date">-->
-        <!--</bean>-->
-        <!--<bean id="formatter"-->
-              <!--class="java.text.SimpleDateFormat">-->
-            <!--<constructor-arg value="dd-MM-yyyy HH:mm:ss"/>-->
-
-        <!--</bean>-->
-        <bean id="message"
-              class="objects.Message">
-
-        </bean>
-    <bean id="user"
-          class="objects.User">
-
-    </bean >
     <bean id="registrationAutorizationController"
           class="controllers.RegistrationAutorizationController">
         <property name="Path3" value="d:\\work\\users.xml"/>
@@ -70,4 +49,7 @@
           class="java.io.File">
         <constructor-arg  type="java.lang.String" value="d:\\automessages.xml"/>
     </bean>
+    <bean id="user"
+        class="objects.User"/>
+
     </beans>

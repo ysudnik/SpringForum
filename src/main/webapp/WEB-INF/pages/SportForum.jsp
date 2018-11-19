@@ -16,20 +16,38 @@
 <script type="text/javascript">
     setTimeout(func, 7000)
 </script>
-<c:forEach items="${messagesSport}" var="message">
+<c:choose>
+    <c:when test="${messagesSport==null}">
+        <h3>Чат пуст, напишите первым</h3>
+        <form action="/sportMessage" method="post">
+            <input type="hidden" value="${userName}" name="userName">
+            <input type="text" name="message">
+            <input type="submit" value="отправить">
+        </form>
+        <hr>
+        <form action="/auto" method="post">
+            <input type="hidden" value="${userName}" name="userName">
+            <input type="submit" value="перейти на тему авто">
+        </form>
+    </c:when>
+    <c:when test="${messagesSport!=null}">
+        <c:forEach items="${messagesSport}" var="message">
 
-        <div><c:out value="${message.date}" /></div>
-        <div><c:out value="${message.getAuthor().getName()}" /><c:out value=": ${message.getText()}" /></div>
-</c:forEach>
-<form action="/sportMessage" method="post" >
-    <input type="hidden" value="${userName}" name="userName">
-    <input type="text"  name="message">
-    <input type="submit" value="отправить">
-</form>
-<hr>
-<form action="/auto" method="post" >
-    <input type="hidden" value="${userName}" name="userName">
-    <input type="submit" value="перейти на тему авто">
-</form>
+            <div><c:out value="${message.date}"/></div>
+            <div><c:out value="${message.getAuthor().getName()}"/><c:out value=": ${message.getText()}"/></div>
+        </c:forEach>
+        <form action="/sportMessage" method="post">
+            <input type="hidden" value="${userName}" name="userName">
+            <input type="text" name="message">
+            <input type="submit" value="отправить">
+        </form>
+        <hr>
+        <form action="/auto" method="post">
+            <input type="hidden" value="${userName}" name="userName">
+            <input type="submit" value="перейти на тему авто">
+        </form>
+    </c:when>
+</c:choose>
+
 </body>
 </html>

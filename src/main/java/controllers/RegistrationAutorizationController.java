@@ -17,7 +17,6 @@ public class RegistrationAutorizationController {
     String Path3;
     DaoXml<User> daoXmlUsers;
     User user;
-    String page;
     File file;
 
     public String getPath3() {
@@ -56,18 +55,12 @@ public class RegistrationAutorizationController {
         this.user = user;
     }
 
-    public String getPage() {
-        return page;
-    }
-
-    public void setPage(String page) {
-        this.page = page;
-    }
 
     @RequestMapping("/autorization")
     public String Autorization(@RequestParam("user") String name,
                                @RequestParam("password") String password,
                                HttpServletRequest request) {
+        String page = null;
         if ((new File(Path3)).exists()) {
             List<User> fullusers = daoXmlUsers.getAll(Path3, User.class);
             if (!fullusers.isEmpty()) {
@@ -93,7 +86,7 @@ public class RegistrationAutorizationController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return page;
+
         }
 
         return page;
@@ -104,7 +97,7 @@ public class RegistrationAutorizationController {
                                @RequestParam("password") String password,
                                HttpServletRequest request) {
 
-
+        String page = null;
         if ((new File(Path3)).exists()) {
             List<User> fullusers = daoXmlUsers.getAll(Path3, User.class);
             user.setName(name);
